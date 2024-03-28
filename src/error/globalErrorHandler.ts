@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 const globalErrorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
-    res.send(500).json({
+    res.status(500).json({
         success: false,
         message: error.message || 'something went wrong',
         error: error

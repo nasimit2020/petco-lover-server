@@ -1,9 +1,10 @@
 import { User } from "@prisma/client"
 import prisma from "../../shared/prisma"
 import bcrypt from 'bcrypt';
+import config from "../../config";
 
 const userRegistrationIntoDB = async (payload: User) => {
-    let hashedPassword: string = await bcrypt.hashSync(payload.password, 13);
+    let hashedPassword: string = await bcrypt.hashSync(payload.password, config.bcrypt_salt as string);
 
     payload.password = hashedPassword;
 
