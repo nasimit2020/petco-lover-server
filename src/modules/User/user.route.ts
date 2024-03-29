@@ -9,6 +9,8 @@ router.post('/api/register', userController.userRegistration);
 
 router.get('/api/profile', auth(), userController.getUser);
 
+router.put('/api/profile', auth(), userController.updateUserInfo);
+
 export const userRouter = {
     router
 };

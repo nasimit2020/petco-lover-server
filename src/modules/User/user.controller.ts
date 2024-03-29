@@ -25,9 +25,22 @@ const getUser = catchAsync(async (req, res) => {
     })
 });
 
+const updateUserInfo = catchAsync(async (req, res) => {
+    const token = req.headers.authorization;
+    const result = await userService.updateUserIntoDB(token as string, req.body);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'User profile updated successfully',
+        data: result
+    })
+});
+
 
 
 export const userController = {
     userRegistration,
     getUser,
+    updateUserInfo,
 }

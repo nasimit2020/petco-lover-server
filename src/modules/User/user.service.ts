@@ -31,11 +31,37 @@ const getUserFromDB = async (token: string) => {
     const { password, ...userData } = result;
 
     return userData;
+};
+
+
+const updateUserIntoDB = async (token: string, payload: Partial<User>) => {
+    const verifiedUser = verifyToken(token, config.jwt_secret as Secret);
+
+    const isUserExists = await prisma.user.findUniqueOrThrow({
+        where: {
+            email: verifiedUser.email
+        }
+    });
+
+    const result = await prisma.user.update({
+        where: {
+            email: isUserExists.email
+        },
+        data: {
+            name: payload.name,
+            email: payload.email
+        }
+    })
+
+    const { password, ...userData } = result;
+
+    return userData;
 }
 
 
 
 export const userService = {
     userRegistrationIntoDB,
-    getUserFromDB
+    getUserFromDB,
+    updateUserIntoDB
 }
