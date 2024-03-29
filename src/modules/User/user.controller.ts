@@ -13,8 +13,21 @@ const userRegistration = catchAsync(async (req, res) => {
     })
 });
 
+const getUser = catchAsync(async (req, res) => {
+    const token = req.headers.authorization;
+    const result = await userService.getUserFromDB(token as string);
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'User Create Successfully',
+        data: result
+    })
+});
+
 
 
 export const userController = {
-    userRegistration
+    userRegistration,
+    getUser,
 }

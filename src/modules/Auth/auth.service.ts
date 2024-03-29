@@ -1,6 +1,6 @@
 import { Secret } from "jsonwebtoken";
 import config from "../../config";
-import { jwtTokenGenerator } from "../../shared/jwtTokenGenarator";
+import { jwtTokenGenerator } from "../../shared/jwtTokenGenerator";
 import prisma from "../../shared/prisma";
 import bcrypt from 'bcrypt';
 
