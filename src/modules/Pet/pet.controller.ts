@@ -13,8 +13,34 @@ const addPet = catchAsync(async (req, res) => {
     })
 });
 
+const getAllPet = catchAsync(async (req, res) => {
+    const result = await petService.getAllPetFromDB();
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Pets retrieved successfully',
+        data: result
+    })
+});
+
+const updatePetProfile = catchAsync(async (req, res) => {
+    const { petId } = req.params;
+
+    const result = await petService.updatePetProfileIntoDB(petId, req.body);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Pet profile updated successfully',
+        data: result
+    })
+});
+
 
 
 export const petController = {
-    addPet
+    addPet,
+    getAllPet,
+    updatePetProfile,
 }

@@ -6,9 +6,28 @@ const addPetIntoDB = async (payload: Pet) => {
         data: payload
     })
     return result;
+};
 
-}
+const getAllPetFromDB = async () => {
+    const result = await prisma.pet.findMany({})
+    return result;
+};
+
+const updatePetProfileIntoDB = async (id: string, payload: Partial<Pet>) => {
+    const result = await prisma.pet.update({
+        where: {
+            id: id
+        },
+        data: {
+            ...payload
+        }
+    });
+
+    return result;
+};
 
 export const petService = {
-    addPetIntoDB
+    addPetIntoDB,
+    getAllPetFromDB,
+    updatePetProfileIntoDB,
 }

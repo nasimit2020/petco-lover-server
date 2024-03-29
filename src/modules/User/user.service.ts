@@ -48,8 +48,7 @@ const updateUserIntoDB = async (token: string, payload: Partial<User>) => {
             email: isUserExists.email
         },
         data: {
-            name: payload.name,
-            email: payload.email
+            ...payload
         }
     })
 
