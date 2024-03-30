@@ -1,4 +1,4 @@
-import { Pet } from "@prisma/client"
+import { Pet, Prisma } from "@prisma/client"
 import prisma from "../../shared/prisma";
 
 const addPetIntoDB = async (payload: Pet) => {
@@ -8,8 +8,48 @@ const addPetIntoDB = async (payload: Pet) => {
     return result;
 };
 
-const getAllPetFromDB = async () => {
-    const result = await prisma.pet.findMany({})
+const getAllPetFromDB = async (params: any) => {
+
+    const { searchTerm, ...filteringData } = params;
+    console.log(filteringData);
+
+
+
+    const andConditions: Prisma.PetWhereInput[] = [];
+
+    const petSearchableFields = ['species', 'breed', 'location'];
+
+    if (params.searchTerm) {
+        andConditions.push(
+            {
+                OR: petSearchableFields.map(field => ({
+                    [field]: {
+                        contains: params.searchTerm,
+                        mode: 'insensitive'
+                    }
+                }))
+            }
+        )
+    };
+
+    if (Object.keys(filteringData).length > 0) {
+        andConditions.push(
+            {
+                AND: Object.keys(filteringData).map(key => ({
+                    [key]: {
+                        equals: filteringData[key],
+                        mode: 'insensitive'
+                    }
+                }))
+            }
+        )
+    }
+
+    const whereCondition: Prisma.PetWhereInput = { AND: andConditions };
+
+    const result = await prisma.pet.findMany({
+        where: whereCondition
+    })
     return result;
 };
 

@@ -14,7 +14,9 @@ const addPet = catchAsync(async (req, res) => {
 });
 
 const getAllPet = catchAsync(async (req, res) => {
-    const result = await petService.getAllPetFromDB();
+    //console.log(req.query);
+
+    const result = await petService.getAllPetFromDB(req.query);
 
     sendResponse(res, {
         statusCode: 201,
