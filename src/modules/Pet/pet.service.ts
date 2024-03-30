@@ -9,11 +9,7 @@ const addPetIntoDB = async (payload: Pet) => {
 };
 
 const getAllPetFromDB = async (params: any) => {
-
     const { searchTerm, ...filteringData } = params;
-    console.log(filteringData);
-
-
 
     const andConditions: Prisma.PetWhereInput[] = [];
 
