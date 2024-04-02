@@ -12,5 +12,5 @@
 - Download the project form github.com
 - Run in terminal `npm install`
 - Working run commend `npm run dev`
-- For production build `npm run tsc`
+- For production build `npm run build`
 - For production run `npm run start:dev`
