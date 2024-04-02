@@ -1,5 +1,9 @@
 import { Pet, Prisma } from "@prisma/client"
 import prisma from "../../shared/prisma";
+import { petSearchableFields } from "./pet.constant";
+import { calculatePagination } from "../../helpers/calculatePagination";
+
+
 
 const addPetIntoDB = async (payload: Pet) => {
     const result = await prisma.pet.create({
@@ -8,12 +12,11 @@ const addPetIntoDB = async (payload: Pet) => {
     return result;
 };
 
-const getAllPetFromDB = async (params: any) => {
+const getAllPetFromDB = async (params: any, options: any) => {
     const { searchTerm, ...filteringData } = params;
+    const { page, limit, sortBy, sortOrder } = calculatePagination(options);
 
     const andConditions: Prisma.PetWhereInput[] = [];
-
-    const petSearchableFields = ['species', 'breed', 'location'];
 
     if (params.searchTerm) {
         andConditions.push(
@@ -44,9 +47,28 @@ const getAllPetFromDB = async (params: any) => {
     const whereCondition: Prisma.PetWhereInput = { AND: andConditions };
 
     const result = await prisma.pet.findMany({
+        where: whereCondition,
+        skip: (Number(page) - 1) * Number(limit),
+        take: Number(limit),
+        orderBy: {
+            [sortBy]: sortOrder
+        }
+    });
+
+    const total = await prisma.pet.count({
         where: whereCondition
-    })
-    return result;
+    });
+
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: {
+            result
+        }
+    };
 };
 
 const updatePetProfileIntoDB = async (id: string, payload: Partial<Pet>) => {
