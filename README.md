@@ -13,4 +13,4 @@
 - Run in terminal `npm install`
 - Working run commend `npm run dev`
 - For production build `npm run tsc`
-- For production run ``npm run start:dev`
+- For production run `npm run start:dev`
