@@ -1,6 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 
-const globalErrorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
+const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
+    console.log(error);
+
+
     res.status(500).json({
         success: false,
         message: error.message || 'Something went wrong',
