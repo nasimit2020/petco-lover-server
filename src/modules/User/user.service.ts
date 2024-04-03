@@ -6,7 +6,7 @@ import { verifyToken } from "../../shared/jwtTokenGenerator";
 import { Secret } from "jsonwebtoken";
 
 const userRegistrationIntoDB = async (payload: User) => {
-    let hashedPassword: string = await bcrypt.hashSync(payload.password, config.bcrypt_salt as string);
+    let hashedPassword: string = await bcrypt.hashSync(payload.password, 13);
 
     payload.password = hashedPassword;
 
