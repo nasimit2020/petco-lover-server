@@ -12,6 +12,8 @@ model User {
   name      String
   email     String     @unique
   password  String
+  role      USER_ROLE? @default(USER)
+  status    STATUS?    @default(ACTIVE)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   Adoption  Adoption[]
@@ -20,6 +22,7 @@ model User {
 model Pet {
   id                   String     @id @default(uuid())
   name                 String
+  photo                String[]
   species              String
   breed                String
   age                  Int
@@ -50,4 +53,15 @@ enum AdoptionStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum USER_ROLE {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+enum STATUS {
+  ACTIVE
+  DEACTIVE
 }

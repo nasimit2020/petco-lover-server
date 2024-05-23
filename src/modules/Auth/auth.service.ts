@@ -20,7 +20,8 @@ const userLoginIntoDB = async (payload: { email: string, password: string }) => 
 
     const jwtSign = {
         email: payload.email,
-        name: isUserExists.name
+        name: isUserExists.name,
+        role: isUserExists.role,
     };
 
     const token = jwtTokenGenerator(jwtSign, config.jwt_secret as Secret, config.jwt_expires_in as string)
