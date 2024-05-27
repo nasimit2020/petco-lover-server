@@ -17,6 +17,19 @@ const addPet = catchAsync(async (req, res) => {
     })
 });
 
+const getSinglePet = catchAsync(async (req, res) => {
+    const { petId } = req.params;
+
+    const result = await petService.getSinglePetFromDB(petId);
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Get Single Pet successfully',
+        data: result
+    })
+});
+
 const getAllPet = catchAsync(async (req, res) => {
     //console.log(req.query);
     const filters = pick(req.query, petFilterableFields);
@@ -52,4 +65,5 @@ export const petController = {
     addPet,
     getAllPet,
     updatePetProfile,
+    getSinglePet
 }

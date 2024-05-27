@@ -19,6 +19,19 @@ const userRegistrationIntoDB = async (payload: User) => {
     return userData;
 };
 
+const getSingleUserFromDB = async (userId: string) => {
+
+
+    const result = await prisma.user.findUniqueOrThrow({
+        where: {
+            id: userId
+        }
+    })
+
+    const { password, ...userData } = result;
+
+    return userData;
+};
 const getUserFromDB = async (token: string) => {
     const verifiedUser = verifyToken(token, config.jwt_secret as Secret);
 
@@ -33,13 +46,17 @@ const getUserFromDB = async (token: string) => {
     return userData;
 };
 
+const getAllUsersFromDB = async () => {
+    const result = await prisma.user.findMany()
+    return result;
+};
 
-const updateUserIntoDB = async (token: string, payload: Partial<User>) => {
-    const verifiedUser = verifyToken(token, config.jwt_secret as Secret);
+
+const updateUserIntoDB = async (userId: string, payload: Partial<User>) => {
 
     const isUserExists = await prisma.user.findUniqueOrThrow({
         where: {
-            email: verifiedUser.email
+            id: userId
         }
     });
 
@@ -61,6 +78,8 @@ const updateUserIntoDB = async (token: string, payload: Partial<User>) => {
 
 export const userService = {
     userRegistrationIntoDB,
+    getSingleUserFromDB,
     getUserFromDB,
-    updateUserIntoDB
+    updateUserIntoDB,
+    getAllUsersFromDB
 }

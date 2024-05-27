@@ -3,11 +3,23 @@ import prisma from "../../shared/prisma";
 import { petSearchableFields } from "./pet.constant";
 import { calculatePagination } from "../../helpers/calculatePagination";
 
-
-
 const addPetIntoDB = async (payload: Pet) => {
+
     const result = await prisma.pet.create({
-        data: payload
+        data: {
+            ...payload,
+            photo: payload.photo as string[],
+        },
+    })
+    return result;
+};
+
+const getSinglePetFromDB = async (petId: string) => {
+
+    const result = await prisma.pet.findUniqueOrThrow({
+        where: {
+            id: petId
+        }
     })
     return result;
 };
@@ -88,4 +100,5 @@ export const petService = {
     addPetIntoDB,
     getAllPetFromDB,
     updatePetProfileIntoDB,
+    getSinglePetFromDB
 }

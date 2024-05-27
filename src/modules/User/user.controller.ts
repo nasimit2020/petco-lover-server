@@ -13,6 +13,19 @@ const userRegistration = catchAsync(async (req, res) => {
     })
 });
 
+const getSingleUser = catchAsync(async (req, res) => {
+    const { userId } = req.params;
+    console.log(userId);
+
+    const result = await userService.getUserFromDB(userId as string);
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'User Create Successfully',
+        data: result
+    })
+});
 const getUser = catchAsync(async (req, res) => {
     const token = req.headers.authorization;
     const result = await userService.getUserFromDB(token as string);
@@ -25,9 +38,21 @@ const getUser = catchAsync(async (req, res) => {
     })
 });
 
+const getAllUsers = catchAsync(async (req, res) => {
+    const result = await userService.getAllUsersFromDB();
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: 'All User Get Successfully',
+        data: result
+    })
+});
+
 const updateUserInfo = catchAsync(async (req, res) => {
-    const token = req.headers.authorization;
-    const result = await userService.updateUserIntoDB(token as string, req.body);
+    const { userId } = req.params;
+
+    const result = await userService.updateUserIntoDB(userId as string, req.body);
 
     sendResponse(res, {
         statusCode: 200,
@@ -41,6 +66,8 @@ const updateUserInfo = catchAsync(async (req, res) => {
 
 export const userController = {
     userRegistration,
+    getSingleUser,
     getUser,
     updateUserInfo,
+    getAllUsers
 }
