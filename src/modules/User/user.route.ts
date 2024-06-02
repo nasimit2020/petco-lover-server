@@ -21,7 +21,9 @@ router.get('/api/profile/:userId', auth(USER_ROLE.ADMIN, USER_ROLE.USER), userCo
 
 router.get('/api/profile', auth(USER_ROLE.ADMIN, USER_ROLE.USER), userController.getUser);
 
-router.put('/api/profile/:userId', auth(USER_ROLE.ADMIN), userController.updateUserInfo);
+router.put('/api/profile/:userId', auth(USER_ROLE.ADMIN, USER_ROLE.USER), userController.updateUserInfo);
+
+router.patch('/api/profile/:userId', auth(USER_ROLE.USER), userController.updateUserInfo);
 
 export const userRouter = {
     router

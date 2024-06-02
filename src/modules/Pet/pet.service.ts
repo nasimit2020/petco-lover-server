@@ -30,6 +30,8 @@ const getAllPetFromDB = async (params: any, options: any) => {
 
     const andConditions: Prisma.PetWhereInput[] = [];
 
+    andConditions.push({ isDeleted: false });
+
     if (params.searchTerm) {
         andConditions.push(
             {

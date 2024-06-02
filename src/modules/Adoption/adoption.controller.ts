@@ -25,6 +25,18 @@ const getAllAdoptionRequest = catchAsync(async (req, res) => {
     })
 });
 
+const getMyAdoption = catchAsync(async (req, res) => {
+    const token = req.headers.authorization;
+    const result = await adoptionService.getMyAdoptionFromDB(token as string);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Adoption requests retrieved successfully',
+        data: result
+    })
+});
+
 const updateAdaptionStatus = catchAsync(async (req, res) => {
     const { requestId } = req.params;
 
@@ -43,5 +55,6 @@ const updateAdaptionStatus = catchAsync(async (req, res) => {
 export const adoptionController = {
     submitAdoption,
     getAllAdoptionRequest,
-    updateAdaptionStatus
+    updateAdaptionStatus,
+    getMyAdoption
 }

@@ -6,6 +6,8 @@ const router = Router();
 
 router.post('/api/login', authController.userLogin);
 
-export const authRoute ={
+router.patch('/api/change-password', authController.changePassword);
+
+export const authRoute = {
     router
 }

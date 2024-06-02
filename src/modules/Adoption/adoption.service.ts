@@ -35,6 +35,28 @@ const getAllAdoptionRequestFromDB = async () => {
     return result;
 };
 
+const getMyAdoptionFromDB = async (token: string) => {
+    const verifiedUser = verifyToken(token, config.jwt_secret as Secret);
+
+    const isUserExists = await prisma.user.findUniqueOrThrow({
+        where: {
+            email: verifiedUser.email
+        }
+    });
+
+    const res = await prisma.adoption.findMany({
+        where: {
+            userId: isUserExists.id
+        },
+        include: {
+            user: true,
+            pet: true,
+        },
+    });
+
+    return res;
+};
+
 const updateAdaptionStatusIntoDB = async (id: string, payload: Partial<Adoption>) => {
 
     const result = await prisma.adoption.update({
@@ -52,5 +74,6 @@ const updateAdaptionStatusIntoDB = async (id: string, payload: Partial<Adoption>
 export const adoptionService = {
     submitAdoptionIntoDB,
     getAllAdoptionRequestFromDB,
-    updateAdaptionStatusIntoDB
+    updateAdaptionStatusIntoDB,
+    getMyAdoptionFromDB
 }
